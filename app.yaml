@@ -1,0 +1,51 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: rollout
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calculator-demo
+  namespace: rollout
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: calculator-demo
+  template:
+    metadata:
+      labels:
+        app: calculator-demo
+    spec:
+      serviceAccountName: rollout-admin
+      containers:
+        - name: calculator-demo
+          image: anooprs471/test-flask-calculator:<TAG>
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+            requests:
+              memory: "500Mi"
+              cpu: "500m"
+          ports:
+            - name: httpport
+              containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollout-service
+  namespace: rollout
+spec:
+  selector:
+    app: calculator-demo
+  type: NodePort
+  ports:
+    - name: httpport
+      port: 3000
+      targetPort: 3000
+      nodePort: 30000
