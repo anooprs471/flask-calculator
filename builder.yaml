@@ -9,6 +9,7 @@ spec:
     volumeMounts:
       - name: docker-sock
         mountPath: /var/run/docker.sock
+    tty: true
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     command:
