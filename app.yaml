@@ -21,7 +21,7 @@ spec:
 #      serviceAccountName: rollout-admin
       containers:
         - name: calculator-demo
-          image: anooprs471/test-flask-calculator:6
+          image: anooprs471/test-flask-calculator:<TAG>
           resources:
             limits:
               memory: "1Gi"
