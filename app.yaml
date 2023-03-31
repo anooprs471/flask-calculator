@@ -19,7 +19,7 @@ spec:
       labels:
         app: calculator-demo
     spec:
-      serviceAccountName: rollout-admin
+#      serviceAccountName: rollout-admin
       containers:
         - name: calculator-demo
           image: anooprs471/test-flask-calculator:<TAG>
