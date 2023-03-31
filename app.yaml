@@ -52,7 +52,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: jenkins-web
+  name: calculator-demo-ingress
   namespace: rollout
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
