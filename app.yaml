@@ -40,6 +40,8 @@ kind: Service
 metadata:
   name: rollout-service
   namespace: rollout
+  labels:
+    app: calculator-demo
 spec:
   selector:
     app: calculator-demo
