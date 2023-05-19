@@ -2,7 +2,7 @@ from flask import render_template, request
 from keep_alive import keep_alive, app
 
 
-@app.route("/")
+@app.route("/calc")
 def main():
     return render_template("calculator.html")
 

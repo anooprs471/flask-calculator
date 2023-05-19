@@ -1,10 +1,6 @@
 pipeline {
-  agent {
-    kubernetes {
-      label 'kubeagent'
-    }
-
-  }
+  agent { label 'ec2-ubuntu-slave' }
+  
   environment{
     DOCKER_USERNAME = credentials('DOCKER_USERNAME')
     DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
@@ -18,31 +14,29 @@ pipeline {
 
     stage('docker login') {
 		steps{
-			sh(script: """
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-			""", returnStdout: true) 
+			sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
 		}
     }
 
     stage('Build-Image') {
       steps {
-        sh '''
-        pack build anooprs471/test-flask-calculator:${BUILD_NUMBER} --path . --builder paketobuildpacks/builder:base
-        '''
-      }
+        sh "pack build anooprs471/test-flask-calculator:${BUILD_NUMBER} --path . --builder paketobuildpacks/builder:base"
+        }
     }
 	
     stage('docker push') {
 		steps{
-			sh(script: """
-            docker push anooprs471/test-flask-calculator:${BUILD_NUMBER}
-			""")
+			sh "docker push anooprs471/test-flask-calculator:${BUILD_NUMBER}"
 		}
     }
 
-    stage('deploy') {
+    stage('Deploy App to Kubernetes') {     
       steps {
-        sh 'echo "Place Holder For Deployment"'
+          withCredentials([file(credentialsId: 'mykubeconfig', variable: 'KUBECONFIG')]) {
+            sh 'sed -i "s/<TAG>/${BUILD_NUMBER}/" flask-calc.yaml'
+	          sh 'kubectl apply -f flask-calc.yaml'
+	          sh 'kubectl apply -f flask-calc-ingress.yaml'
+          }
       }
     }
 

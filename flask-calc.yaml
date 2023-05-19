@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-calculator
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: calc-frontend
+  template:
+    metadata:
+      labels:
+        app: calc-frontend
+    spec:
+      containers:
+      - name: flask-calc
+        image: anooprs471/test-flask-calculator:<TAG>
+        ports:
+          - name: httpport
+            containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: calc-web
+  namespace: staging
+  labels:
+    app: calc-frontend
+spec:
+  type: ClusterIP
+  ports:
+    - name: calc-frontend
+      port: 3000
+      protocol: TCP
+  selector:
+    app: calc-frontend
