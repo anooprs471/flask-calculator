@@ -59,7 +59,7 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/target-type: ip
     #alb.ingress.kubernetes.io/subnets: subnet-0f37ed79ce205c830, subnet-0f182d61d55178219, subnet-00358cfac04c4d7d9
-    #alb.ingress.kubernetes.io/security-groups: sg-08a1914be9d711c44
+    #alb.ingress.kubernetes.io/security-groups: sg-08a1914be9d711c44_test
 spec:
   rules:
   - http:
